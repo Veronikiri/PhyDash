@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/newuser.LAPTOP-0NF4QGNS/projects/project/build/_deps/freetype-src/src/base/ftver.rc
+windows.h
+-
+

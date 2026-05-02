@@ -1,0 +1,3 @@
+C:/Users/newuser.LAPTOP-0NF4QGNS/projects/project/build/_deps/vorbis-subbuild/CMakeFiles/vorbis-populate.dir
+C:/Users/newuser.LAPTOP-0NF4QGNS/projects/project/build/_deps/vorbis-subbuild/CMakeFiles/edit_cache.dir
+C:/Users/newuser.LAPTOP-0NF4QGNS/projects/project/build/_deps/vorbis-subbuild/CMakeFiles/rebuild_cache.dir

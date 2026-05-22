@@ -1,6 +1,6 @@
-#include "Entities/Obstacle.h"
+#include "Entities/TriangleObstacle.h"
 
-Obstacle::Obstacle(float x, float y) {
+TriangleObstacle::TriangleObstacle(float x, float y) {
     m_triangle.setPointCount(3);
     m_triangle.setPoint(0, { 25.f, 0.f });
     m_triangle.setPoint(1, { 0.f, 50.f });
@@ -11,10 +11,10 @@ Obstacle::Obstacle(float x, float y) {
     m_triangle.setPosition({ x, y });
 }
 
-void Obstacle::draw(sf::RenderWindow& window) {
+void TriangleObstacle::draw(sf::RenderWindow& window) {
     window.draw(m_triangle);
 }
 
-sf::FloatRect Obstacle::getBounds() const {
+sf::FloatRect TriangleObstacle::getBounds() const {
     return m_triangle.getGlobalBounds();
 }

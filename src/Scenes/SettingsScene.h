@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/Scene.h"
 #include "UI/Button.h"
-#include "UI/BackButton.h"
+#include "UI/BackButton.h"  // <-- должно быть
 #include <vector>
 #include <memory>
 
@@ -21,12 +21,7 @@ public:
 private:
     Game& m_game;
     sf::Text m_title;
-    BackButton m_backButton;
-
-    // Убираем эти три кнопки – они не нужны, так как у нас чекбоксы
-    // Button m_autoRestartButton;
-    // Button m_hideAttemptsButton;
-    // Button m_showHitboxesButton;
+    BackButton m_backButton;  // <-- BackButton, не Button
 
     sf::RectangleShape m_autoRestartCheckbox;
     sf::RectangleShape m_hideAttemptsCheckbox;

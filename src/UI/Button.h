@@ -22,7 +22,9 @@ public:
 
     sf::FloatRect getGlobalBounds() const { return m_box.getGlobalBounds(); }
 
-    void autoResize(float paddingX = 30.f, float paddingY = 10.f);
+    // Новые методы
+    void setFixedSize(sf::Vector2f size);
+    void setOutlineThickness(float thickness);
 
 private:
     sf::RectangleShape m_box;

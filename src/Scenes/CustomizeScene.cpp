@@ -28,11 +28,27 @@ CustomizeScene::CustomizeScene(Game& game)
     m_previewBg.setOutlineColor(sf::Color::Cyan);
     m_previewBg.setPosition({ 100.f, 150.f });
 
-    // ========== КНОПКИ ФОРМ ==========
+    // ========== КНОПКИ ФОРМ (все одинакового размера) ==========
     std::vector<std::string> formNames = { "Cube","Ship","Ball","UFO","Wave","Robot","Spider" };
-    float fx = 550, fy = 180, sx = 260, sy = 60;
+
+    // Находим самый широкий текст
+    float maxFormWidth = 0.f;
+    float formHeight = 0.f;
+    for (const auto& name : formNames) {
+        sf::Text tempText(game.getFont(), name, 22);
+        sf::FloatRect bounds = tempText.getLocalBounds();
+        if (bounds.size.x > maxFormWidth) maxFormWidth = bounds.size.x;
+        formHeight = bounds.size.y;
+    }
+
+    // Размер кнопки = ширина самого длинного текста + отступы
+    sf::Vector2f formButtonSize = { maxFormWidth + 40.f, formHeight + 20.f };
+
+    float fx = 550, fy = 180, sx = 300, sy = 70;
     for (size_t i = 0; i < formNames.size(); ++i) {
         Button btn(game.getFont(), formNames[i], 22);
+        btn.setFixedSize(formButtonSize);
+        btn.setOutlineThickness(1.5f);
         int col = i % 2, row = i / 2;
         btn.setPosition({ fx + col * sx, fy + row * sy });
         btn.setColors(sf::Color::Transparent, sf::Color::Transparent, sf::Color::White, sf::Color::Cyan);
@@ -43,11 +59,25 @@ CustomizeScene::CustomizeScene(Game& game)
         m_formButtons.push_back(std::move(btn));
     }
 
-    // ========== КНОПКИ ПАТТЕРНОВ ==========
+    // ========== КНОПКИ ПАТТЕРНОВ (все одинакового размера) ==========
     std::vector<std::string> patNames = { "Plain","Stripes","Checker" };
-    float px = 480, py = 460, sp = 250;
+
+    float maxPatWidth = 0.f;
+    float patHeight = 0.f;
+    for (const auto& name : patNames) {
+        sf::Text tempText(game.getFont(), name, 18);
+        sf::FloatRect bounds = tempText.getLocalBounds();
+        if (bounds.size.x > maxPatWidth) maxPatWidth = bounds.size.x;
+        patHeight = bounds.size.y;
+    }
+
+    sf::Vector2f patButtonSize = { maxPatWidth + 30.f, patHeight + 15.f };
+
+    float px = 480, py = 460, sp = 300;
     for (size_t i = 0; i < patNames.size(); ++i) {
         Button btn(game.getFont(), patNames[i], 18);
+        btn.setFixedSize(patButtonSize);
+        btn.setOutlineThickness(1.5f);
         btn.setPosition({ px + i * sp, py });
         btn.setColors(sf::Color::Transparent, sf::Color::Transparent, sf::Color::White, sf::Color::Cyan);
         btn.setCallback([this, idx = i]() {
@@ -59,8 +89,8 @@ CustomizeScene::CustomizeScene(Game& game)
 
     // ========== КНОПКА BACK ==========
     m_backButton.setPosition({ 120.f, 680.f });
-    m_backButton.setColors(sf::Color::Transparent, sf::Color::Transparent, sf::Color::White, sf::Color::Cyan);
     m_backButton.setCallback([this]() { m_shouldClose = true; });
+
 
     // ========== GLOW ЧЕКБОКС ==========
     m_glowLabel.setPosition({ 460.f, 540.f });
@@ -71,12 +101,27 @@ CustomizeScene::CustomizeScene(Game& game)
     m_glowCheckbox.setFillColor(m_glowEnabled ? sf::Color::Green : sf::Color::Red);
 
     // ========== МЕТКИ ЦВЕТОВЫХ СЛОТОВ ==========
+        // ========== МЕТКИ ЦВЕТОВЫХ СЛОТОВ (все одинаковой ширины) ==========
     std::vector<std::string> slotNames = { "Primary", "Secondary", "Glow" };
     float labelStartX = 460, labelStartY = 590, labelSpacing = 210;
+
+    // Находим самый широкий текст среди слотов
+    float maxSlotWidth = 0.f;
+    for (const auto& name : slotNames) {
+        sf::Text tempText(game.getFont(), name, 18);
+        sf::FloatRect bounds = tempText.getLocalBounds();
+        if (bounds.size.x > maxSlotWidth) maxSlotWidth = bounds.size.x;
+    }
+
     for (int i = 0; i < 3; ++i) {
         sf::Text label(game.getFont(), slotNames[i], 18);
         label.setFillColor(sf::Color::White);
+
+        // Центрируем каждую метку относительно её позиции
+        sf::FloatRect bounds = label.getLocalBounds();
+        label.setOrigin({ bounds.position.x + bounds.size.x / 2.f, 0.f });
         label.setPosition({ labelStartX + i * labelSpacing, labelStartY });
+
         m_colorLabels.push_back(label);
     }
 

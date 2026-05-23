@@ -94,8 +94,8 @@ bool LevelLoader::loadLevel(const std::string& filename,
 
     for (const auto& obj : data["objects"]) {
         int type = obj["type"];
-        float x = obj["x"] * scale;
-        float y = (1050.0f - obj["y"]) * scale;
+        float x = obj["x"].get<float>() * scale;
+        float y = (1050.0f - obj["y"].get<float>()) * scale;
 
         auto it = typeMap.find(type);
         if (it != typeMap.end()) {

@@ -70,6 +70,31 @@ void PlayingScene::reset() {
     m_music.play();
 }
 
+float PlayingScene::getRightmostX() const {
+    float rightmost = -1e9f;
+    for (const auto& s : m_spikes) {
+        float right = s.getBounds().position.x + s.getBounds().size.x;
+        if (right > rightmost) rightmost = right;
+    }
+    for (const auto& b : m_blocks) {
+        float right = b.getBounds().position.x + b.getBounds().size.x;
+        if (right > rightmost) rightmost = right;
+    }
+    for (const auto& o : m_orbs) {
+        float right = o.getBounds().position.x + o.getBounds().size.x;
+        if (right > rightmost) rightmost = right;
+    }
+    for (const auto& p : m_pads) {
+        float right = p.getBounds().position.x + p.getBounds().size.x;
+        if (right > rightmost) rightmost = right;
+    }
+    for (const auto& p : m_portals) {
+        float right = p.getBounds().position.x + p.getBounds().size.x;
+        if (right > rightmost) rightmost = right;
+    }
+    return rightmost;
+}
+
 void PlayingScene::generateNewPattern() {
     std::uniform_int_distribution<> dist(0, static_cast<int>(m_patternPool.size()) - 1);
     const auto& pattern = m_patternPool[dist(m_rng)];
@@ -137,14 +162,41 @@ void PlayingScene::update(sf::Time dt) {
 
         sf::FloatRect playerBounds = m_player->getBounds();
 
+        // Шипы
         for (const auto& spike : m_spikes) {
             if (playerBounds.findIntersection(spike.getBounds())) {
                 m_alive = false;
                 m_deathSound.play();
-                break;
+                return;
             }
         }
 
+        bool onGround = false;
+        for (auto& block : m_blocks) {
+            if (playerBounds.findIntersection(block.getBounds())) {
+                sf::FloatRect blockBounds = block.getBounds();
+                float playerBottom = playerBounds.position.y + playerBounds.size.y;
+                float blockTop = blockBounds.position.y;
+                float overlapY = playerBottom - blockTop;
+
+                if (m_player->getVelocity().y > 0 && overlapY > 0 && overlapY <= 25.f) {
+                    m_player->setPosition({ m_player->getPosition().x, blockTop - playerBounds.size.y });
+                    m_player->setVelocity({ m_player->getVelocity().x, 0.f });
+                    onGround = true;
+                    break;
+                } else {
+                    if (!m_player->isJumping() && overlapY > 0 && overlapY < 20.f) {
+                        onGround = true;
+                        break;
+                    }
+                    m_alive = false;
+                    m_deathSound.play();
+                    return;
+                }
+            }
+        }
+
+        // Орбы
         bool orbTouched = false;
         for (auto& orb : m_orbs) {
             if (playerBounds.findIntersection(orb.getBounds())) {
@@ -154,18 +206,18 @@ void PlayingScene::update(sf::Time dt) {
                 break;
             }
         }
-        if (!orbTouched) {
-            m_player->setOnOrb(false);
-        }
+        if (!orbTouched) m_player->setOnOrb(false);
 
+        // Пады
         for (auto& pad : m_pads) {
             if (playerBounds.findIntersection(pad.getBounds())) {
-                m_player->setVelocity({ m_player->getVelocity().x, -800.f });
+                m_player->setVelocity({ m_player->getVelocity().x, -1200.f });
                 pad.shape.setFillColor(sf::Color(0, 255, 100, 100));
                 break;
             }
         }
 
+        // Порталы
         for (auto& portal : m_portals) {
             if (playerBounds.findIntersection(portal.getBounds())) {
                 PlayerForm newForm = portal.getForm();
@@ -181,28 +233,25 @@ void PlayingScene::update(sf::Time dt) {
             }
         }
 
-        static float lastGenerationX = 0.f;
-        if (m_player->getPosition().x > lastGenerationX + 400.f) {
-            generateNewPattern();
-            lastGenerationX = m_player->getPosition().x;
-        }
+        // Генерация новых паттернов
+        float rightmost = getRightmostX();
+        float spawnThreshold = m_player->getPosition().x + 500.f;
+        if (rightmost < spawnThreshold) generateNewPattern();
 
+        // Удаление ушедших за экран
         auto removeOffscreen = [](auto& vec) {
             vec.erase(std::remove_if(vec.begin(), vec.end(),
                 [](const auto& obj) { return obj.getBounds().position.x + obj.getBounds().size.x < -200.f; }),
                 vec.end());
-            };
+        };
         removeOffscreen(m_spikes);
         removeOffscreen(m_blocks);
         removeOffscreen(m_orbs);
         removeOffscreen(m_pads);
         removeOffscreen(m_portals);
-
     }
     else {
-        if (SettingsScene::isAutoRestartEnabled()) {
-            reset();
-        }
+        if (SettingsScene::isAutoRestartEnabled()) reset();
         else {
             m_deathTimer += delta;
             if (m_deathTimer >= 1.0f) {
@@ -224,7 +273,7 @@ void PlayingScene::render(sf::RenderWindow& window) {
     window.setView(gameView);
 
     sf::RectangleShape floor({ 100000.f, 4.f });
-    floor.setPosition({ 0.f, 550.f });
+    floor.setPosition({ -100.f, 550.f });
     floor.setFillColor(sf::Color(100, 100, 100));
     window.draw(floor);
 
@@ -236,12 +285,12 @@ void PlayingScene::render(sf::RenderWindow& window) {
 
     if (SettingsScene::isShowHitboxesEnabled()) {
         sf::RectangleShape debugBounds;
-        debugBounds.setOutlineThickness(2.f);
-        debugBounds.setOutlineColor(sf::Color::Red);
+        sf::FloatRect bounds = m_player->getBounds();
+        debugBounds.setSize({ bounds.size.x, bounds.size.y });
+        debugBounds.setPosition(bounds.position);
         debugBounds.setFillColor(sf::Color::Transparent);
-
-        debugBounds.setSize({ m_player->getBounds().size.x, m_player->getBounds().size.y });
-        debugBounds.setPosition(m_player->getBounds().position);
+        debugBounds.setOutlineColor(sf::Color::Green);
+        debugBounds.setOutlineThickness(2.f);
         window.draw(debugBounds);
     }
 

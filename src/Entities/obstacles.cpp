@@ -1,5 +1,8 @@
 #include "Entities/obstacles.hpp"
+#include "Entities/Player.h"
 #include <random>
+
+float speed = -400.f;
 
 // ---------- Spike ----------
 Spike::Spike(float x, float y) {

@@ -3,10 +3,11 @@
 #include <vector>
 #include "Entities/Player.h"   // для PlayerForm
 
+extern float speed;
+
 struct Spike {
     sf::ConvexShape shape;
     sf::RectangleShape hitbox;
-    float speed = -250.f;
 
     Spike(float x, float y);
     void update(float dt);
@@ -18,7 +19,6 @@ struct Spike {
 struct Block {
     sf::RectangleShape shape;
     sf::RectangleShape hitbox;
-    float speed = -250.f;
 
     Block(float x, float y);
     void update(float dt);
@@ -30,7 +30,6 @@ struct Block {
 struct Orb {
     sf::CircleShape shape;
     sf::RectangleShape hitbox;
-    float speed = -250.f;
 
     Orb(float x, float y);
     void update(float dt);
@@ -42,7 +41,6 @@ struct Orb {
 struct Pad {
     sf::RectangleShape shape;
     sf::RectangleShape hitbox;
-    float speed = -250.f;
 
     Pad(float x, float y);
     void update(float dt);
@@ -54,7 +52,6 @@ struct Pad {
 struct Portal {
     sf::RectangleShape hitbox;
     PlayerForm targetForm;   // Cube или Ship
-    float speed = -250.f;
 
     Portal(float x, float y, PlayerForm form);
     void update(float dt);

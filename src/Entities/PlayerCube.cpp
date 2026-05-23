@@ -1,18 +1,18 @@
 #include "Entities/PlayerCube.h"
 #include <cmath>
+#include <algorithm>
 
 PlayerCube::PlayerCube() {
     m_shape.setSize({ 50.f, 50.f });
     m_shape.setOrigin({ 25.f, 25.f });
     m_shape.setFillColor(sf::Color::Cyan);
-    m_shape.setPosition({ 200.f, 525.f });
 }
 
 void PlayerCube::handleInput(const sf::Event& event) {
     if (auto* key = event.getIf<sf::Event::KeyPressed>()) {
         if (key->code == sf::Keyboard::Key::Space) {
             if (m_onOrb) {
-                jump(); // вызовет усиленный прыжок (даже в воздухе)
+                jump();
             }
             else if (!m_isJumping) {
                 jump();
@@ -34,6 +34,7 @@ void PlayerCube::handleInput(const sf::Event& event) {
 }
 
 void PlayerCube::update(sf::Time dt) {
+    applyPhysics(dt);
     float dtSec = dt.asSeconds();
     m_velocity.y += m_gravity * dtSec;
     m_shape.move(m_velocity * dtSec);

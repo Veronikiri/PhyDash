@@ -19,6 +19,7 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
+    float getRightmostX() const;
     void reset();
     void generateNewPattern();
     bool allObstaclesOffscreen() const;

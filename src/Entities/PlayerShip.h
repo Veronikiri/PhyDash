@@ -2,6 +2,8 @@
 #include "Entities/Player.h"
 
 class PlayerShip : public Player {
+private:
+    bool m_shipHolding = false;
 public:
     PlayerShip();
     void handleInput(const sf::Event& event) override;

@@ -9,7 +9,7 @@
 #include <cmath>
 
 void Player::applyPhysics(sf::Time dt) {
-    if (!m_isJumping) return;
+    if (!m_isJumping && m_onBlock) return;
     float dtSec = dt.asSeconds();
     m_velocity.y += m_gravity * dtSec;
     m_shape.move(m_velocity * dtSec);

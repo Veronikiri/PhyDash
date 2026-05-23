@@ -34,10 +34,11 @@ public:
 
     bool isJumping() const { return m_isJumping; }
     void jump() {
-        if (!m_isJumping || m_onOrb) {
+        if (!m_isJumping || m_onOrb || m_onBlock) {
             m_velocity.y = -800.f;
             m_isJumping = true;
             m_onOrb = false;
+            m_onBlock = false;
         }
     }
 
@@ -51,9 +52,22 @@ public:
     static std::unique_ptr<Player> createForm(PlayerForm form);
 
     void setOnGround(bool on) {
-        if (on) m_velocity.y = 0.f;
-        m_isJumping = !on;
+        if (on) {
+            m_isJumping = false;
+            m_velocity.y = 0.f;
+        } else {
+            m_isJumping = true;
+        }
     }
+
+    void setOnBlock(bool on) { 
+        m_onBlock = on; 
+        if (on) {
+            m_isJumping = false;
+            m_velocity.y = 0.f;
+        }
+    }
+    bool isOnBlock() const { return m_onBlock; }
         
 
 protected:
@@ -61,7 +75,8 @@ protected:
     sf::Vector2f m_velocity = { 0.f, 0.f };
     bool m_isJumping = false;
     bool m_onOrb = false;
-    float m_gravity = 1800.f;
+    bool m_onBlock = false;
+    float m_gravity = 2200.f;
 
     sf::Color m_primaryColor = sf::Color::Cyan;
     sf::Color m_secondaryColor = sf::Color::White;

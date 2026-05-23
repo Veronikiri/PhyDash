@@ -8,12 +8,51 @@ PlayerShip::PlayerShip() {
 }
 
 void PlayerShip::handleInput(const sf::Event& event) {
-    if (auto* key = event.getIf<sf::Event::KeyPressed>()) {
-        if (key->code == sf::Keyboard::Key::Space && !m_isJumping) jump();
+    if (const auto* key = event.getIf<sf::Event::KeyPressed>()) {
+        if (key->code == sf::Keyboard::Key::Space) {
+            m_shipHolding = true;
+        }
+    }
+    if (const auto* key = event.getIf<sf::Event::KeyReleased>()) {
+        if (key->code == sf::Keyboard::Key::Space) {
+            m_shipHolding = false;
+        }
+    }
+    if (const auto* mouse = event.getIf<sf::Event::MouseButtonPressed>()) {
+        if (mouse->button == sf::Mouse::Button::Left) {
+            m_shipHolding = true;
+        }
+    }
+    if (const auto* mouse = event.getIf<sf::Event::MouseButtonReleased>()) {
+        if (mouse->button == sf::Mouse::Button::Left) {
+            m_shipHolding = false;
+        }
     }
 }
 
-void PlayerShip::update(sf::Time dt) { applyPhysics(dt); }
+void PlayerShip::update(sf::Time dt) {
+    float dtSec = dt.asSeconds();
+    if (m_shipHolding) {
+        m_velocity.y -= 1000.f * dtSec;
+    } else {
+        m_velocity.y += 1000.f * dtSec;
+    }
+    if (m_velocity.y > 800.f) m_velocity.y = 800.f;
+    if (m_velocity.y < -800.f) m_velocity.y = -800.f;
+    m_shape.move(m_velocity * dtSec);
+    if (m_shape.getPosition().y < 50.f) {
+        m_shape.setPosition({m_shape.getPosition().x, 50.f});
+        m_velocity.y = 0.f;
+    }
+    if (m_shape.getPosition().y > 525.f) {
+        m_shape.setPosition({m_shape.getPosition().x, 525.f});
+        m_velocity.y = 0.f;
+        m_isJumping = false;
+    } else {
+        m_isJumping = true;
+    }
+}
+ 
 
 void PlayerShip::draw(sf::RenderWindow& window) {
     sf::ConvexShape ship(4);

@@ -148,9 +148,7 @@ void PlayingScene::update(sf::Time dt) {
 
     if (m_alive) {
         m_score += delta * 10.f;
-        std::stringstream ss;
-        ss << "Score: " << static_cast<int>(m_score);
-        m_scoreText.setString(ss.str());
+        m_scoreText.setString("Score: " + std::to_string((int)m_score));
 
         m_player->update(sf::seconds(delta));
 
@@ -171,29 +169,34 @@ void PlayingScene::update(sf::Time dt) {
             }
         }
 
-        bool onGround = false;
         for (auto& block : m_blocks) {
             if (playerBounds.findIntersection(block.getBounds())) {
                 sf::FloatRect blockBounds = block.getBounds();
                 float playerBottom = playerBounds.position.y + playerBounds.size.y;
                 float blockTop = blockBounds.position.y;
-                float overlapY = playerBottom - blockTop;
+                float playerTop = playerBounds.position.y;
+                float blockBottom = blockBounds.position.y + blockBounds.size.y;
 
-                if (m_player->getVelocity().y > 0 && overlapY > 0 && overlapY <= 25.f) {
-                    m_player->setPosition({ m_player->getPosition().x, blockTop - playerBounds.size.y });
-                    m_player->setVelocity({ m_player->getVelocity().x, 0.f });
-                    onGround = true;
+                if (m_player->getVelocity().y > 0 && playerBottom <= blockTop + 15.f) {
+                    m_player->setPosition({ 200.f, blockTop - playerBounds.size.y+25.f });
+                    m_player->setVelocity({ 0.f, 0.f });        
+                    m_player->setOnBlock(true);
                     break;
-                } else {
-                    if (!m_player->isJumping() && overlapY > 0 && overlapY < 20.f) {
-                        onGround = true;
-                        break;
-                    }
+                } 
+                else {
                     m_alive = false;
                     m_deathSound.play();
                     return;
                 }
             }
+        }
+
+        if (m_player->getPosition().y >= 525.f) {
+            m_player->setPosition({ m_player->getPosition().x, 525.f });
+            m_player->setVelocity({ m_player->getVelocity().x, 0.f });
+            m_player->setOnGround(true);
+        } else {
+            m_player->setOnGround(false);
         }
 
         // Орбы
@@ -206,7 +209,9 @@ void PlayingScene::update(sf::Time dt) {
                 break;
             }
         }
-        if (!orbTouched) m_player->setOnOrb(false);
+        if (!orbTouched) {
+            m_player->setOnOrb(false);
+        }
 
         // Пады
         for (auto& pad : m_pads) {
@@ -225,7 +230,7 @@ void PlayingScene::update(sf::Time dt) {
                     auto newPlayer = Player::createForm(newForm);
                     newPlayer->setPosition(m_player->getPosition());
                     newPlayer->setColors(m_player->getPrimaryColor(), m_player->getSecondaryColor(),
-                        m_player->getGlowColor(), m_player->isGlowEnabled());
+                                        m_player->getGlowColor(), m_player->isGlowEnabled());
                     newPlayer->setOnOrb(m_player->isOnOrb());
                     m_player = std::move(newPlayer);
                 }
@@ -233,10 +238,12 @@ void PlayingScene::update(sf::Time dt) {
             }
         }
 
-        // Генерация новых паттернов
+        // Генерация новых паттернов (по самой правой точке)
         float rightmost = getRightmostX();
         float spawnThreshold = m_player->getPosition().x + 500.f;
-        if (rightmost < spawnThreshold) generateNewPattern();
+        if (rightmost < spawnThreshold) {
+            generateNewPattern();
+        }
 
         // Удаление ушедших за экран
         auto removeOffscreen = [](auto& vec) {
@@ -249,18 +256,17 @@ void PlayingScene::update(sf::Time dt) {
         removeOffscreen(m_orbs);
         removeOffscreen(m_pads);
         removeOffscreen(m_portals);
-    }
-    else {
-        if (SettingsScene::isAutoRestartEnabled()) reset();
-        else {
+
+    } else {
+        if (SettingsScene::isAutoRestartEnabled()) {
+            reset();
+        } else {
             m_deathTimer += delta;
             if (m_deathTimer >= 1.0f) {
                 int intScore = static_cast<int>(m_score);
                 if (intScore > m_best) {
                     m_best = intScore;
-                    std::stringstream ss;
-                    ss << "Best: " << m_best;
-                    m_bestText.setString(ss.str());
+                    m_bestText.setString("Best: " + std::to_string(m_best));
                 }
                 reset();
             }

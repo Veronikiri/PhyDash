@@ -51,7 +51,7 @@ struct Pad {
 
 struct Portal {
     sf::RectangleShape hitbox;
-    PlayerForm targetForm;   // Cube или Ship
+    PlayerForm targetForm;
 
     Portal(float x, float y, PlayerForm form);
     void update(float dt);

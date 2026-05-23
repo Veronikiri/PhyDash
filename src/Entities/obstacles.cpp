@@ -4,13 +4,11 @@
 
 float speed = -400.f;
 
-// ---------- Spike ----------
 Spike::Spike(float x, float y) {
     shape.setPointCount(3);
     shape.setPoint(0, { 0.f, 0.f });
     shape.setPoint(1, { -25.f, 50.f });
     shape.setPoint(2, { 25.f, 50.f });
-    // Заливка: красный с небольшой прозрачностью
     shape.setFillColor(sf::Color(255, 50, 50, 180));
     shape.setOutlineColor(sf::Color::Red);
     shape.setOutlineThickness(2.f);
@@ -41,10 +39,8 @@ bool Spike::onscreen() const {
     return shape.getPosition().x + 50.f > 0;
 }
 
-// ---------- Block ----------
 Block::Block(float x, float y) {
     shape.setSize({ 50.f, 50.f });
-    // Заливка: синий с прозрачностью
     shape.setFillColor(sf::Color(50, 50, 255, 180));
     shape.setOutlineColor(sf::Color::Blue);
     shape.setOutlineThickness(2.f);
@@ -75,10 +71,8 @@ bool Block::onscreen() const {
     return shape.getPosition().x + shape.getSize().x > 0;
 }
 
-// ---------- Orb ----------
 Orb::Orb(float x, float y) {
     shape.setRadius(25.f);
-    // Заливка: жёлтый/оранжевый
     shape.setFillColor(sf::Color(255, 200, 50, 200));
     shape.setOutlineColor(sf::Color::Yellow);
     shape.setOutlineThickness(3.f);
@@ -109,10 +103,8 @@ bool Orb::onscreen() const {
     return shape.getPosition().x > 0;
 }
 
-// ---------- Pad ----------
 Pad::Pad(float x, float y) {
     shape.setSize({ 50.f, 10.f });
-    // Заливка: ярко-зелёный
     shape.setFillColor(sf::Color(0, 255, 100, 220));
     shape.setOutlineColor(sf::Color::White);
     shape.setOutlineThickness(2.f);
@@ -143,7 +135,6 @@ bool Pad::onscreen() const {
     return shape.getPosition().x + shape.getSize().x > 0;
 }
 
-// ---------- Portal ----------
 Portal::Portal(float x, float y, PlayerForm form)
     : targetForm(form) {
     hitbox.setSize({ 25.f, 100.f });
@@ -178,7 +169,6 @@ bool Portal::onscreen() const {
     return hitbox.getPosition().x + hitbox.getSize().x > 0;
 }
 
-// ---------- ObstaclePattern ----------
 void ObstaclePattern::addSpike(float x, float y) {
     spikes.emplace_back(x, y);
 }
@@ -208,7 +198,23 @@ void ObstaclePattern::addPortal(float x, float y, PlayerForm form) {
 std::vector<ObstaclePattern> createPatternPool() {
     std::vector<ObstaclePattern> pool;
 
-    // Паттерн 1
+    {
+        ObstaclePattern p;
+        p.addPortal(800.f, 400.f, PlayerForm::Ship);
+        p.addBigBlock(1200.f, 500.f, 12, 1);
+        p.addBigBlock(1200.f, 300.f, 12, 10);
+
+        p.addBigBlock(2400.f, 500.f, 12, 5);
+        p.addBigBlock(2400.f, 100.f, 12, 10);
+
+        p.addBigBlock(3600.f, 500.f, 12, 3);
+        p.addBigBlock(3600.f, 200.f, 12, 10);
+
+        
+        p.addPortal(4200.f, 275.f, PlayerForm::Cube);
+        pool.push_back(p);
+    }
+
     {
         ObstaclePattern p;
         p.addPad(800.f, 500.f);
@@ -218,7 +224,7 @@ std::vector<ObstaclePattern> createPatternPool() {
         p.addSpike(1000.f, 500.f);
         pool.push_back(p);
     }
-    // Паттерн 2
+
     {
         ObstaclePattern p;
         p.addSpike(800.f, 500.f);
@@ -229,7 +235,7 @@ std::vector<ObstaclePattern> createPatternPool() {
         p.addSpike(1000.f, 500.f);
         pool.push_back(p);
     }
-    // Паттерн 3
+
     {
         ObstaclePattern p;
         p.addOrb(800.f, 400.f);
@@ -240,7 +246,7 @@ std::vector<ObstaclePattern> createPatternPool() {
         p.addSpike(1100.f, 350.f);
         pool.push_back(p);
     }
-    // Паттерн 4
+
     {
         ObstaclePattern p;
         p.addSpike(800.f, 500.f);

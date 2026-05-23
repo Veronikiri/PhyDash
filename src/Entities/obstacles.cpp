@@ -2,7 +2,7 @@
 #include "Entities/Player.h"
 #include <random>
 
-float speed = -400.f;
+float speed = -300.f;
 
 Spike::Spike(float x, float y) {
     shape.setPointCount(3);

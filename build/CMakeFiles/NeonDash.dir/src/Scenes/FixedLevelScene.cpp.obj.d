@@ -284,37 +284,12 @@ CMakeFiles/NeonDash.dir/src/Scenes/FixedLevelScene.cpp.obj: \
  C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/System/Sleep.hpp \
  C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Entities/Player.h \
  C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Entities/obstacles.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/InputSoundFile.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/Export.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/SoundFileReader.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/SoundChannel.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/Listener.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/Music.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/SoundStream.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/SoundSource.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/AudioResource.hpp \
- C:/msys64/ucrt64/include/c++/14.2.0/functional \
- C:/msys64/ucrt64/include/c++/14.2.0/bits/std_function.h \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/OutputSoundFile.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/SoundFileWriter.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/PlaybackDevice.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/Sound.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/SoundBuffer.hpp \
- C:/msys64/ucrt64/include/c++/14.2.0/unordered_set \
- C:/msys64/ucrt64/include/c++/14.2.0/bits/unordered_set.h \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/SoundBufferRecorder.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/SoundRecorder.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/SoundFileFactory.hpp \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/build/_deps/sfml-src/include/SFML/Audio/SoundFileFactory.inl \
+ C:/msys64/ucrt64/include/c++/14.2.0/iostream \
  C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Core/Game.h \
  C:/msys64/ucrt64/include/c++/14.2.0/stack \
  C:/msys64/ucrt64/include/c++/14.2.0/deque \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_deque.h \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/deque.tcc \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_stack.h \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Utils/LevelLoader.h \
- C:/msys64/ucrt64/include/c++/14.2.0/iostream \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Scenes/SettingsScene.h \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/UI/Button.h \
- C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/UI/BackButton.h
+ C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Utils/PlayerSettings.h \
+ C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Entities/PlayerCube.h

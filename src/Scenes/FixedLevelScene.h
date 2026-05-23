@@ -4,7 +4,7 @@
 #include "Entities/obstacles.hpp"
 #include <vector>
 #include <memory>
-#include <SFML/Audio.hpp>
+#include <iostream>
 
 class Game;
 
@@ -18,21 +18,24 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
+    void buildLevel();
     void reset();
 
     Game& m_game;
     std::unique_ptr<Player> m_player;
+
     std::vector<Spike> m_spikes;
     std::vector<Block> m_blocks;
     std::vector<Orb> m_orbs;
     std::vector<Pad> m_pads;
     std::vector<Portal> m_portals;
 
-    bool m_alive;
-    float m_deathTimer;
+    std::vector<sf::Vector2f> m_initialSpikePositions;
+    std::vector<sf::Vector2f> m_initialBlockPositions;
+
+    bool m_alive = true;
+    float m_deathTimer = 0.f;
     static constexpr float DEATH_DELAY = 1.0f;
 
     sf::Text m_deathText;
-    sf::Music m_music;
-    sf::Music m_deathSound;
 };

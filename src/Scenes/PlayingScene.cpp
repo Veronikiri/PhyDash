@@ -160,7 +160,6 @@ void PlayingScene::update(sf::Time dt) {
 
         sf::FloatRect playerBounds = m_player->getBounds();
 
-        // Шипы
         for (const auto& spike : m_spikes) {
             if (playerBounds.findIntersection(spike.getBounds())) {
                 m_alive = false;
@@ -183,6 +182,12 @@ void PlayingScene::update(sf::Time dt) {
                     m_player->setOnBlock(true);
                     break;
                 } 
+                else if (m_player->getVelocity().y <= 0 && playerTop >= blockBottom - 15.f) {
+                    m_player->setPosition({ 200.f, blockBottom + 25.f });
+                    m_player->setVelocity({ 0.f, 0.f });        
+                    m_player->setOnBlock(true);
+                    break;
+                } 
                 else {
                     m_alive = false;
                     m_deathSound.play();
@@ -199,7 +204,6 @@ void PlayingScene::update(sf::Time dt) {
             m_player->setOnGround(false);
         }
 
-        // Орбы
         bool orbTouched = false;
         for (auto& orb : m_orbs) {
             if (playerBounds.findIntersection(orb.getBounds())) {
@@ -222,7 +226,6 @@ void PlayingScene::update(sf::Time dt) {
             }
         }
 
-        // Порталы
         for (auto& portal : m_portals) {
             if (playerBounds.findIntersection(portal.getBounds())) {
                 PlayerForm newForm = portal.getForm();
@@ -238,14 +241,12 @@ void PlayingScene::update(sf::Time dt) {
             }
         }
 
-        // Генерация новых паттернов (по самой правой точке)
         float rightmost = getRightmostX();
         float spawnThreshold = m_player->getPosition().x + 500.f;
         if (rightmost < spawnThreshold) {
             generateNewPattern();
         }
 
-        // Удаление ушедших за экран
         auto removeOffscreen = [](auto& vec) {
             vec.erase(std::remove_if(vec.begin(), vec.end(),
                 [](const auto& obj) { return obj.getBounds().position.x + obj.getBounds().size.x < -200.f; }),

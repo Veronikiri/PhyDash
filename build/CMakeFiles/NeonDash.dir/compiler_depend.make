@@ -3569,25 +3569,6 @@ CMakeFiles/NeonDash.dir/src/Scenes/CustomizeScene.cpp.obj: C:/Users/newuser.LAPT
   C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/syslimits.h
 
 CMakeFiles/NeonDash.dir/src/Scenes/FixedLevelScene.cpp.obj: C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Scenes/FixedLevelScene.cpp \
-  _deps/sfml-src/include/SFML/Audio.hpp \
-  _deps/sfml-src/include/SFML/Audio/AudioResource.hpp \
-  _deps/sfml-src/include/SFML/Audio/Export.hpp \
-  _deps/sfml-src/include/SFML/Audio/InputSoundFile.hpp \
-  _deps/sfml-src/include/SFML/Audio/Listener.hpp \
-  _deps/sfml-src/include/SFML/Audio/Music.hpp \
-  _deps/sfml-src/include/SFML/Audio/OutputSoundFile.hpp \
-  _deps/sfml-src/include/SFML/Audio/PlaybackDevice.hpp \
-  _deps/sfml-src/include/SFML/Audio/Sound.hpp \
-  _deps/sfml-src/include/SFML/Audio/SoundBuffer.hpp \
-  _deps/sfml-src/include/SFML/Audio/SoundBufferRecorder.hpp \
-  _deps/sfml-src/include/SFML/Audio/SoundChannel.hpp \
-  _deps/sfml-src/include/SFML/Audio/SoundFileFactory.hpp \
-  _deps/sfml-src/include/SFML/Audio/SoundFileFactory.inl \
-  _deps/sfml-src/include/SFML/Audio/SoundFileReader.hpp \
-  _deps/sfml-src/include/SFML/Audio/SoundFileWriter.hpp \
-  _deps/sfml-src/include/SFML/Audio/SoundRecorder.hpp \
-  _deps/sfml-src/include/SFML/Audio/SoundSource.hpp \
-  _deps/sfml-src/include/SFML/Audio/SoundStream.hpp \
   _deps/sfml-src/include/SFML/Config.hpp \
   _deps/sfml-src/include/SFML/Graphics.hpp \
   _deps/sfml-src/include/SFML/Graphics/BlendMode.hpp \
@@ -3669,12 +3650,10 @@ CMakeFiles/NeonDash.dir/src/Scenes/FixedLevelScene.cpp.obj: C:/Users/newuser.LAP
   C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Core/Game.h \
   C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Core/Scene.h \
   C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Entities/Player.h \
+  C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Entities/PlayerCube.h \
   C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Entities/obstacles.hpp \
   C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Scenes/FixedLevelScene.h \
-  C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Scenes/SettingsScene.h \
-  C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/UI/BackButton.h \
-  C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/UI/Button.h \
-  C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Utils/LevelLoader.h \
+  C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Utils/PlayerSettings.h \
   C:/msys64/ucrt64/include/_mingw.h \
   C:/msys64/ucrt64/include/_mingw_mac.h \
   C:/msys64/ucrt64/include/_mingw_off_t.h \
@@ -3751,7 +3730,6 @@ CMakeFiles/NeonDash.dir/src/Scenes/FixedLevelScene.cpp.obj: C:/Users/newuser.LAP
   C:/msys64/ucrt64/include/c++/14.2.0/bits/shared_ptr_base.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/sstream.tcc \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/std_abs.h \
-  C:/msys64/ucrt64/include/c++/14.2.0/bits/std_function.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_algobase.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_bvector.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_construct.h \
@@ -3774,7 +3752,6 @@ CMakeFiles/NeonDash.dir/src/Scenes/FixedLevelScene.cpp.obj: C:/Users/newuser.LAP
   C:/msys64/ucrt64/include/c++/14.2.0/bits/stringfwd.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/unique_ptr.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/unordered_map.h \
-  C:/msys64/ucrt64/include/c++/14.2.0/bits/unordered_set.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/uses_allocator.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/uses_allocator_args.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/utility.h \
@@ -3807,7 +3784,6 @@ CMakeFiles/NeonDash.dir/src/Scenes/FixedLevelScene.cpp.obj: C:/Users/newuser.LAP
   C:/msys64/ucrt64/include/c++/14.2.0/ext/string_conversions.h \
   C:/msys64/ucrt64/include/c++/14.2.0/ext/type_traits.h \
   C:/msys64/ucrt64/include/c++/14.2.0/filesystem \
-  C:/msys64/ucrt64/include/c++/14.2.0/functional \
   C:/msys64/ucrt64/include/c++/14.2.0/initializer_list \
   C:/msys64/ucrt64/include/c++/14.2.0/iomanip \
   C:/msys64/ucrt64/include/c++/14.2.0/ios \
@@ -3837,7 +3813,6 @@ CMakeFiles/NeonDash.dir/src/Scenes/FixedLevelScene.cpp.obj: C:/Users/newuser.LAP
   C:/msys64/ucrt64/include/c++/14.2.0/type_traits \
   C:/msys64/ucrt64/include/c++/14.2.0/typeinfo \
   C:/msys64/ucrt64/include/c++/14.2.0/unordered_map \
-  C:/msys64/ucrt64/include/c++/14.2.0/unordered_set \
   C:/msys64/ucrt64/include/c++/14.2.0/utility \
   C:/msys64/ucrt64/include/c++/14.2.0/variant \
   C:/msys64/ucrt64/include/c++/14.2.0/vector \
@@ -4146,6 +4121,7 @@ CMakeFiles/NeonDash.dir/src/Scenes/MenuScene.cpp.obj: C:/Users/newuser.LAPTOP-0N
   C:/msys64/ucrt64/include/c++/14.2.0/iomanip \
   C:/msys64/ucrt64/include/c++/14.2.0/ios \
   C:/msys64/ucrt64/include/c++/14.2.0/iosfwd \
+  C:/msys64/ucrt64/include/c++/14.2.0/iostream \
   C:/msys64/ucrt64/include/c++/14.2.0/istream \
   C:/msys64/ucrt64/include/c++/14.2.0/iterator \
   C:/msys64/ucrt64/include/c++/14.2.0/limits \
@@ -6982,9 +6958,9 @@ C:/msys64/ucrt64/include/c++/14.2.0/ext/type_traits.h:
 
 C:/msys64/ucrt64/include/c++/14.2.0/filesystem:
 
-C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/UI/Slider.cpp:
-
 C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Utils/LevelLoader.h:
+
+C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/UI/Slider.cpp:
 
 C:/msys64/ucrt64/include/c++/14.2.0/initializer_list:
 
@@ -7196,6 +7172,14 @@ C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Scenes/CustomizeScene.cpp:
 
 C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/UI/Slider.h:
 
+C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Scenes/FixedLevelScene.h:
+
+_deps/sfml-src/include/SFML/Audio/SoundSource.hpp:
+
+C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Utils/PlayerSettings.h:
+
+C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Scenes/MenuScene.cpp:
+
 _deps/sfml-src/include/SFML/Audio.hpp:
 
 _deps/sfml-src/include/SFML/Audio/AudioResource.hpp:
@@ -7210,19 +7194,13 @@ _deps/sfml-src/include/SFML/Audio/SoundFileReader.hpp:
 
 _deps/sfml-src/include/SFML/Audio/SoundFileWriter.hpp:
 
-_deps/sfml-src/include/SFML/Audio/SoundSource.hpp:
-
 _deps/sfml-src/include/SFML/Audio/SoundStream.hpp:
 
-C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Scenes/FixedLevelScene.h:
+C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Scenes/PlayingScene.h:
 
 C:/msys64/ucrt64/include/c++/14.2.0/bits/unordered_set.h:
 
 C:/msys64/ucrt64/include/c++/14.2.0/unordered_set:
-
-C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Scenes/MenuScene.cpp:
-
-C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/Scenes/PlayingScene.h:
 
 C:/Users/newuser.LAPTOP-0NF4QGNS/projects/phydash/src/main.cpp:
 

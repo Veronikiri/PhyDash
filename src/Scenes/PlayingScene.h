@@ -4,7 +4,7 @@
 #include "Entities/obstacles.hpp"
 #include <vector>
 #include <memory>
-#include <random>          // <-- добавлено!
+#include <random>
 #include <SFML/Audio.hpp>
 
 class Game;
@@ -21,7 +21,7 @@ public:
 private:
     void reset();
     void generateNewPattern();
-    bool allObstaclesOffscreen() const;
+    float getRightmostX() const;
 
     Game& m_game;
     std::unique_ptr<Player> m_player;

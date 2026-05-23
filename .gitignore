@@ -1,6 +1,35 @@
-.vs/
+# CMake build directories
+build/
+cmake-build-*/
 out/
-x64/
-Debug/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+CMakeSettings.json
+
+# Compiled files
 *.exe
+*.dll
+*.so
+*.dylib
+*.o
 *.obj
+
+# SFML specific
+assets/music/*.ogg  # если музыка большая, можно убрать
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db

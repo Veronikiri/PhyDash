@@ -9,6 +9,7 @@
 #include <cmath>
 
 void Player::applyPhysics(sf::Time dt) {
+    if (!m_isJumping && m_onBlock) return;
     float dtSec = dt.asSeconds();
     m_velocity.y += m_gravity * dtSec;
     m_shape.move(m_velocity * dtSec);
@@ -21,7 +22,6 @@ void Player::applyPhysics(sf::Time dt) {
 
 void Player::drawGlow(sf::RenderWindow& window, const sf::Shape& shape) const {
     if (!m_glowEnabled) return;
-    // Клонируем фигуру для отрисовки свечения
     sf::Color glowColor(m_glowColor.r, m_glowColor.g, m_glowColor.b, 80);
     if (const auto* rect = dynamic_cast<const sf::RectangleShape*>(&shape)) {
         sf::RectangleShape copy = *rect;

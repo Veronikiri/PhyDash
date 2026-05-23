@@ -22,7 +22,6 @@ public:
 
     sf::FloatRect getGlobalBounds() const { return m_box.getGlobalBounds(); }
 
-    // Новые методы
     void setFixedSize(sf::Vector2f size);
     void setOutlineThickness(float thickness);
 

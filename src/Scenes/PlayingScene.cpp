@@ -2,6 +2,7 @@
 #include "Core/Game.h"
 #include "Entities/PlayerCube.h"
 #include "Entities/PlayerShip.h"
+#include "Utils/PlayerSettings.h"
 #include <random>
 #include <sstream>
 #include <iostream>
@@ -39,7 +40,8 @@ PlayingScene::PlayingScene(Game& game)
 
     m_patternPool = createPatternPool();
 
-    m_player = Player::createForm(PlayerForm::Cube);
+    auto& settings = PlayerSettings::getInstance();
+    m_player = settings.createPlayer();
     m_player->setPosition({ 200.f, 525.f });
 
     reset();
@@ -49,14 +51,40 @@ PlayingScene::~PlayingScene() {
     m_music.stop();
 }
 
+float PlayingScene::getRightmostX() const {
+    float rightmost = -1e9f;
+    for (const auto& s : m_spikes) {
+        float right = s.getBounds().position.x + s.getBounds().size.x;
+        if (right > rightmost) rightmost = right;
+    }
+    for (const auto& b : m_blocks) {
+        float right = b.getBounds().position.x + b.getBounds().size.x;
+        if (right > rightmost) rightmost = right;
+    }
+    for (const auto& o : m_orbs) {
+        float right = o.getBounds().position.x + o.getBounds().size.x;
+        if (right > rightmost) rightmost = right;
+    }
+    for (const auto& p : m_pads) {
+        float right = p.getBounds().position.x + p.getBounds().size.x;
+        if (right > rightmost) rightmost = right;
+    }
+    for (const auto& p : m_portals) {
+        float right = p.getBounds().position.x + p.getBounds().size.x;
+        if (right > rightmost) rightmost = right;
+    }
+    return rightmost;
+}
+
 void PlayingScene::reset() {
     m_alive = true;
     m_score = 0.f;
     m_deathTimer = 0.f;
 
-    m_player = Player::createForm(PlayerForm::Cube);
+    auto& settings = PlayerSettings::getInstance();
+    m_player = settings.createPlayer();
     m_player->setPosition({ 200.f, 525.f });
-    m_player->resetPosition();
+    m_player->setVelocity({ 0.f, 0.f });
 
     m_spikes.clear();
     m_blocks.clear();
@@ -123,9 +151,7 @@ void PlayingScene::update(sf::Time dt) {
 
     if (m_alive) {
         m_score += delta * 10.f;
-        std::stringstream ss;
-        ss << "Score: " << static_cast<int>(m_score);
-        m_scoreText.setString(ss.str());
+        m_scoreText.setString("Score: " + std::to_string((int)m_score));
 
         m_player->update(sf::seconds(delta));
 
@@ -137,14 +163,47 @@ void PlayingScene::update(sf::Time dt) {
 
         sf::FloatRect playerBounds = m_player->getBounds();
 
+        // Шипы
         for (const auto& spike : m_spikes) {
             if (playerBounds.findIntersection(spike.getBounds())) {
                 m_alive = false;
                 m_deathSound.play();
-                break;
+                return;
             }
         }
 
+        for (auto& block : m_blocks) {
+            if (playerBounds.findIntersection(block.getBounds())) {
+                sf::FloatRect blockBounds = block.getBounds();
+                float playerBottom = playerBounds.position.y + playerBounds.size.y;
+                float blockTop = blockBounds.position.y;
+                float playerTop = playerBounds.position.y;
+                float blockBottom = blockBounds.position.y + blockBounds.size.y;
+
+                if (m_player->getVelocity().y > 0 && playerBottom <= blockTop + 15.f) {
+                    m_player->setPosition({ 200.f, blockTop - playerBounds.size.y + 25.f });
+                    m_player->setVelocity({ 0.f, 0.f });
+                    m_player->setOnBlock(true);
+                    break;
+                }
+                else {
+                    m_alive = false;
+                    m_deathSound.play();
+                    return;
+                }
+            }
+        }
+
+        if (m_player->getPosition().y >= 525.f) {
+            m_player->setPosition({ m_player->getPosition().x, 525.f });
+            m_player->setVelocity({ m_player->getVelocity().x, 0.f });
+            m_player->setOnGround(true);
+        }
+        else {
+            m_player->setOnGround(false);
+        }
+
+        // Орбы
         bool orbTouched = false;
         for (auto& orb : m_orbs) {
             if (playerBounds.findIntersection(orb.getBounds())) {
@@ -158,35 +217,52 @@ void PlayingScene::update(sf::Time dt) {
             m_player->setOnOrb(false);
         }
 
+        // Пады
         for (auto& pad : m_pads) {
             if (playerBounds.findIntersection(pad.getBounds())) {
-                m_player->setVelocity({ m_player->getVelocity().x, -800.f });
+                m_player->setVelocity({ m_player->getVelocity().x, -1200.f });
                 pad.shape.setFillColor(sf::Color(0, 255, 100, 100));
                 break;
             }
         }
 
+        // Порталы
         for (auto& portal : m_portals) {
             if (playerBounds.findIntersection(portal.getBounds())) {
                 PlayerForm newForm = portal.getForm();
-                if (newForm == PlayerForm::Cube || newForm == PlayerForm::Ship) {
-                    auto newPlayer = Player::createForm(newForm);
-                    newPlayer->setPosition(m_player->getPosition());
-                    newPlayer->setColors(m_player->getPrimaryColor(), m_player->getSecondaryColor(),
-                        m_player->getGlowColor(), m_player->isGlowEnabled());
-                    newPlayer->setOnOrb(m_player->isOnOrb());
-                    m_player = std::move(newPlayer);
+
+                auto newPlayer = Player::createForm(newForm);
+
+                newPlayer->setPosition(m_player->getPosition());
+                newPlayer->setVelocity(m_player->getVelocity());
+                newPlayer->setOnOrb(m_player->isOnOrb());
+
+                auto& settings = PlayerSettings::getInstance();
+                newPlayer->setColors(
+                    settings.getPrimaryColor(),
+                    settings.getSecondaryColor(),
+                    settings.getGlowColor(),
+                    settings.isGlowEnabled()
+                );
+
+                if (newForm == PlayerForm::Cube) {
+                    auto* cube = dynamic_cast<PlayerCube*>(newPlayer.get());
+                    if (cube) cube->setPattern(settings.getCubePattern());
                 }
+
+                m_player = std::move(newPlayer);
                 break;
             }
         }
 
-        static float lastGenerationX = 0.f;
-        if (m_player->getPosition().x > lastGenerationX + 400.f) {
+        // Генерация новых паттернов
+        float rightmost = getRightmostX();
+        float spawnThreshold = m_player->getPosition().x + 500.f;
+        if (rightmost < spawnThreshold) {
             generateNewPattern();
-            lastGenerationX = m_player->getPosition().x;
         }
 
+        // Удаление ушедших за экран
         auto removeOffscreen = [](auto& vec) {
             vec.erase(std::remove_if(vec.begin(), vec.end(),
                 [](const auto& obj) { return obj.getBounds().position.x + obj.getBounds().size.x < -200.f; }),
@@ -209,9 +285,7 @@ void PlayingScene::update(sf::Time dt) {
                 int intScore = static_cast<int>(m_score);
                 if (intScore > m_best) {
                     m_best = intScore;
-                    std::stringstream ss;
-                    ss << "Best: " << m_best;
-                    m_bestText.setString(ss.str());
+                    m_bestText.setString("Best: " + std::to_string(m_best));
                 }
                 reset();
             }
@@ -224,7 +298,7 @@ void PlayingScene::render(sf::RenderWindow& window) {
     window.setView(gameView);
 
     sf::RectangleShape floor({ 100000.f, 4.f });
-    floor.setPosition({ 0.f, 550.f });
+    floor.setPosition({ -100.f, 550.f });
     floor.setFillColor(sf::Color(100, 100, 100));
     window.draw(floor);
 
@@ -236,12 +310,12 @@ void PlayingScene::render(sf::RenderWindow& window) {
 
     if (SettingsScene::isShowHitboxesEnabled()) {
         sf::RectangleShape debugBounds;
-        debugBounds.setOutlineThickness(2.f);
-        debugBounds.setOutlineColor(sf::Color::Red);
+        sf::FloatRect bounds = m_player->getBounds();
+        debugBounds.setSize({ bounds.size.x, bounds.size.y });
+        debugBounds.setPosition(bounds.position);
         debugBounds.setFillColor(sf::Color::Transparent);
-
-        debugBounds.setSize({ m_player->getBounds().size.x, m_player->getBounds().size.y });
-        debugBounds.setPosition(m_player->getBounds().position);
+        debugBounds.setOutlineColor(sf::Color::Green);
+        debugBounds.setOutlineThickness(2.f);
         window.draw(debugBounds);
     }
 

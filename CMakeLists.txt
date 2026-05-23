@@ -32,10 +32,11 @@ set(SOURCES
     src/Utils/LevelLoader.cpp
     src/Scenes/SettingsScene.cpp 
     src/UI/BackButton.cpp 
+    src/Entities/NewObstacles.h
+    src/Utils/PlayerSettings.h
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES} "src/Scenes/SettingsScene.h" "src/Scenes/SettingsScene.cpp"  "src/UI/BackButton.cpp" "src/UI/BackButton.h")
-
+add_executable(${PROJECT_NAME} ${SOURCES} "src/Utils/PlayerSettings.h")
 target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Window SFML::System SFML::Audio)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

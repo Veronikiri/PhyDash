@@ -21,7 +21,6 @@ MenuScene::MenuScene(Game& game) : m_game(game) {
     m_shadow->setOutlineColor(sf::Color(255, 0, 255, 80));
     m_shadow->setOutlineThickness(8);
 
-    // Сначала находим самый широкий текст среди кнопок меню
     std::vector<std::string> buttonTexts = { "START", "MODES", "SETTINGS", "CUSTOMIZE" };
     float maxWidth = 0.f;
     float buttonHeight = 0.f;
@@ -33,7 +32,6 @@ MenuScene::MenuScene(Game& game) : m_game(game) {
         buttonHeight = bounds.size.y;
     }
 
-    // Размер всех кнопок меню (одинаковый)
     sf::Vector2f menuButtonSize = { maxWidth + 60.f, buttonHeight + 25.f };
 
     std::vector<std::pair<std::string, std::function<void()>>> items = {
@@ -48,8 +46,8 @@ MenuScene::MenuScene(Game& game) : m_game(game) {
 
     for (size_t i = 0; i < items.size(); ++i) {
         Button btn(font, items[i].first, 34);
-        btn.setFixedSize(menuButtonSize);      // устанавливаем одинаковый размер
-        btn.setOutlineThickness(1.5f);         // тонкая обводка
+        btn.setFixedSize(menuButtonSize);
+        btn.setOutlineThickness(1.5f);
         btn.setPosition({ 640.f, 280.f + i * 95.f });
         btn.setColors(sf::Color::Transparent, sf::Color(255, 0, 255, 30), sf::Color::White, sf::Color::Cyan);
         btn.setCallback(items[i].second);

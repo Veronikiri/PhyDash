@@ -18,6 +18,7 @@ public:
     void onEnter() override;
 
 private:
+    void saveSettings();
     void updatePreview();
     void updateColorSlidersFromCurrentColor();
     void updateCurrentEditColor();
@@ -48,5 +49,5 @@ private:
     sf::Color m_currentEditColor;
 
     bool m_shouldClose = false;
-    bool m_isClosed = false;   // защита от повторного вызова popScene
+    bool m_isClosed = false;
 };

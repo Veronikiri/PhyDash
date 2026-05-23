@@ -12,7 +12,7 @@ public:
     Slider(Slider&&) = default;
     Slider& operator=(Slider&&) = default;
 
-    void setValue(float value); // 0..1
+    void setValue(float value);
     float getValue() const;
     void setCallback(std::function<void(float)> callback);
     void handleEvent(const sf::Event& event, const sf::RenderWindow& window);

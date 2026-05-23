@@ -1,18 +1,21 @@
 #include "Entities/PlayerCube.h"
 #include <cmath>
+#include <algorithm>
 
 PlayerCube::PlayerCube() {
     m_shape.setSize({ 50.f, 50.f });
     m_shape.setOrigin({ 25.f, 25.f });
     m_shape.setFillColor(sf::Color::Cyan);
-    m_shape.setPosition({ 200.f, 525.f });
 }
 
 void PlayerCube::handleInput(const sf::Event& event) {
     if (auto* key = event.getIf<sf::Event::KeyPressed>()) {
         if (key->code == sf::Keyboard::Key::Space) {
             if (m_onOrb) {
-                jump(); // вызовет усиленный прыжок (даже в воздухе)
+                jump();
+            }
+            if (m_onBlock) {
+                jump();
             }
             else if (!m_isJumping) {
                 jump();
@@ -25,6 +28,9 @@ void PlayerCube::handleInput(const sf::Event& event) {
             if (m_onOrb) {
                 jump();
             }
+            if (m_onBlock) {
+                jump();
+            }
             else if (!m_isJumping) {
                 jump();
                 m_startRotation = m_shape.getRotation();
@@ -34,10 +40,7 @@ void PlayerCube::handleInput(const sf::Event& event) {
 }
 
 void PlayerCube::update(sf::Time dt) {
-    float dtSec = dt.asSeconds();
-    m_velocity.y += m_gravity * dtSec;
-    m_shape.move(m_velocity * dtSec);
-
+    applyPhysics(dt);
     if (m_isJumping) {
         float progress = (m_velocity.y + 800.f) / 1600.f;
         progress = std::clamp(progress, 0.f, 1.f);
@@ -72,8 +75,7 @@ void PlayerCube::draw(sf::RenderWindow& window) {
     if (m_glowEnabled) drawGlow(window, body);
     window.draw(body);
 
-    // Паттерны
-    if (m_cubePattern == 1) { // Stripes
+    if (m_cubePattern == 1) {
         sf::RectangleShape stripe({ 50.f, 8.f });
         stripe.setFillColor(m_secondaryColor);
         stripe.setOrigin({ 25.f, 4.f });
@@ -87,7 +89,7 @@ void PlayerCube::draw(sf::RenderWindow& window) {
         stripe.setPosition(posDown);
         window.draw(stripe);
     }
-    else if (m_cubePattern == 2) { // Checker
+    else if (m_cubePattern == 2) {
         sf::RectangleShape sq({ 20.f, 20.f });
         sq.setFillColor(m_secondaryColor);
         sq.setOrigin({ 10.f, 10.f });
@@ -100,7 +102,6 @@ void PlayerCube::draw(sf::RenderWindow& window) {
         window.draw(sq);
     }
 
-    // Глаза
     sf::CircleShape eye(6.f);
     eye.setFillColor(sf::Color::White);
     eye.setOrigin({ 6.f, 6.f });

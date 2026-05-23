@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/Scene.h"
 #include "UI/Button.h"
-#include "UI/BackButton.h"  // <-- должно быть
+#include "UI/BackButton.h"
 #include <vector>
 #include <memory>
 
@@ -21,7 +21,7 @@ public:
 private:
     Game& m_game;
     sf::Text m_title;
-    BackButton m_backButton;  // <-- BackButton, не Button
+    BackButton m_backButton;
 
     sf::RectangleShape m_autoRestartCheckbox;
     sf::RectangleShape m_hideAttemptsCheckbox;

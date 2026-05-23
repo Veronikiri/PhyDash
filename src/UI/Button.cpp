@@ -3,7 +3,6 @@
 Button::Button(const sf::Font& font, const std::string& txt, unsigned int size)
     : m_text(font, txt, size)
 {
-    // Временный размер, будет изменён через setFixedSize
     m_box.setSize({ 100.f, 40.f });
     m_box.setOutlineThickness(1.5f);
     m_box.setOutlineColor(sf::Color::Cyan);
@@ -17,7 +16,6 @@ Button::Button(const sf::Font& font, const std::string& txt, unsigned int size)
     m_box.setFillColor(m_normalColor);
     m_text.setFillColor(m_textNormal);
 
-    // Центрируем текст
     sf::FloatRect b = m_text.getLocalBounds();
     m_text.setOrigin({ b.position.x + b.size.x / 2.f, b.position.y + b.size.y / 2.f });
 }
@@ -26,7 +24,6 @@ void Button::setFixedSize(sf::Vector2f size) {
     m_box.setSize(size);
     m_box.setOrigin({ size.x / 2.f, size.y / 2.f });
 
-    // Текст остаётся центрированным внутри нового размера
     sf::FloatRect textBounds = m_text.getLocalBounds();
     m_text.setOrigin({ textBounds.position.x + textBounds.size.x / 2.f,
                       textBounds.position.y + textBounds.size.y / 2.f });
@@ -56,8 +53,9 @@ void Button::setCallback(std::function<void()> callback) {
 
 void Button::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
     if (auto* mouse = event.getIf<sf::Event::MouseButtonPressed>()) {
-        if (mouse->button == sf::Mouse::Button::Left && m_isHovered && m_callback)
+        if (mouse->button == sf::Mouse::Button::Left && m_isHovered && m_callback) {
             m_callback();
+        }
     }
 }
 
